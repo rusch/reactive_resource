@@ -11,6 +11,8 @@ module ReactiveResource
   class Base < ActiveResource::Base
     extend Extensions::RelativeConstGet
     class_attribute :singleton_resource
+    class_attribute :include_format_in_path
+    self.include_format_in_path = true
 
     # Call this method to transform a resource into a 'singleton'
     # resource. This will fix the paths Active Resource generates for
@@ -55,7 +57,7 @@ module ReactiveResource
     # example), or the empty string if +format+ doesn't specify an
     # extension
     def self.extension
-      format.extension.blank? ? "" : ".#{format.extension}"
+      (!include_format_in_path || format.extension.blank?) ? "" : ".#{format.extension}"
     end
 
     # This method differs from its parent by adding association_prefix
